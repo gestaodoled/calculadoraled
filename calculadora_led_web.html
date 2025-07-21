@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora LED - Central de Apoio LED</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      color: #555;
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    .resultado {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: white;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Calculadora LED</h1>
+  <div class="logo">Central de Apoio LED</div>
+
+  <label for="largura">Largura (em metros):</label>
+  <input type="number" id="largura" step="0.01">
+
+  <label for="altura">Altura (em metros):</label>
+  <input type="number" id="altura" step="0.01">
+
+  <label for="pitch">Pixel Pitch (ex: 5 para P5):</label>
+  <input type="number" id="pitch" step="0.01">
+
+  <button onclick="calcular()">Calcular</button>
+
+  <div class="resultado" id="resultado"></div>
+
+  <script>
+    function calcular() {
+      const largura = parseFloat(document.getElementById('largura').value);
+      const altura = parseFloat(document.getElementById('altura').value);
+      const pitch = parseFloat(document.getElementById('pitch').value);
+
+      if (isNaN(largura) || isNaN(altura) || isNaN(pitch) || largura <= 0 || altura <= 0 || pitch <= 0) {
+        document.getElementById('resultado').innerHTML = '<strong>Por favor, insira valores válidos.</strong>';
+        return;
+      }
+
+      const largura_mm = largura * 1000;
+      const altura_mm = altura * 1000;
+      const largura_px = Math.round(largura_mm / pitch);
+      const altura_px = Math.round(altura_mm / pitch);
+      const total_px = largura_px * altura_px;
+
+      let distancia = '';
+      if (pitch <= 3) {
+        distancia = 'Curta distância (ambientes internos)';
+      } else if (pitch <= 6) {
+        distancia = 'Média distância (vitrines, lojas, etc.)';
+      } else {
+        distancia = 'Longa distância (áreas externas, fachadas)';
+      }
+
+      document.getElementById('resultado').innerHTML = `
+        <p><strong>📏 Resolução horizontal:</strong> ${largura_px} px</p>
+        <p><strong>📐 Resolução vertical:</strong> ${altura_px} px</p>
+        <p><strong>🔢 Total de pixels:</strong> ${total_px.toLocaleString('pt-BR')}</p>
+        <p><strong>📌 Distância ideal de visualização:</strong> ${distancia}</p>
+      `;
+    }
+  </script>
+</body>
+</html>
