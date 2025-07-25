@@ -99,6 +99,7 @@
       const altura_px = Math.round(altura_mm / pitch);
       const total_px = largura_px * altura_px;
 
+      // Distância ideal
       let distancia = '';
       if (pitch <= 3) {
         distancia = 'Curta distância (ambientes internos)';
@@ -108,11 +109,20 @@
         distancia = 'Longa distância (áreas externas, fachadas)';
       }
 
+      // Quantidade de portas necessárias
+      const portas = Math.ceil(total_px / 590000);
+
+      // Cálculo da diagonal em polegadas
+      const diagonal_m = Math.sqrt(Math.pow(largura, 2) + Math.pow(altura, 2));
+      const diagonal_pol = (diagonal_m * 39.37).toFixed(1);
+
       document.getElementById('resultado').innerHTML = `
         <p><strong>📏 Resolução horizontal:</strong> ${largura_px} px</p>
         <p><strong>📐 Resolução vertical:</strong> ${altura_px} px</p>
         <p><strong>🔢 Total de pixels:</strong> ${total_px.toLocaleString('pt-BR')}</p>
         <p><strong>📌 Distância ideal de visualização:</strong> ${distancia}</p>
+        <p><strong>🔌 Quantidade de portas necessárias:</strong> ${portas}</p>
+        <p><strong>📺 Tamanho da tela:</strong> ${diagonal_pol}"</p>
       `;
     }
   </script>
